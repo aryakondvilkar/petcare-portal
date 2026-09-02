@@ -4,8 +4,9 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__, template_folder='.')
 
 def get_db_connection():
-    conn = sqlite3.connect('petcare.db')
+    conn = sqlite3.connect('petcare.db', timeout=20)
     conn.row_factory = sqlite3.Row
+    conn.execute('PRAGMA journal_mode=WAL;')
     return conn
 
 # 1. Home Page / Service Catalog
