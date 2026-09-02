@@ -1,7 +1,7 @@
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 
 def get_db_connection():
     conn = sqlite3.connect('petcare.db')
