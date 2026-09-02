@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__, template_folder='.')
+app.secret_key = 'supersecretpetcarekey'
 
 def get_db_connection():
     conn = sqlite3.connect('petcare.db', timeout=20)
@@ -39,6 +40,27 @@ def register():
         return redirect(url_for('dashboard', owner_id=owner_id))
 
     return render_template('register.html')
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Owner WHERE email = ? AND password = ?", (email, password))
+        owner = cursor.fetchone()
+        conn.close()
+
+        if owner:
+            session['owner_id'] = owner['owner_id'] if 'owner_id' in owner.keys() else owner[0]
+            session['owner_name'] = owner['full_name'] if 'full_name' in owner.keys() else owner[1]
+            return redirect('/dashboard')
+        else:
+            return "Invalid email or password. <a href='/login'>Try again</a>", 401
+
+    return render_template('login.html')
 
 # 3. Owner Dashboard
 @app.route('/dashboard/<int:owner_id>')
