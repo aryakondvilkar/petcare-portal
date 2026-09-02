@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #0f766e;
+  --primary-hover: #115e59;
+  --primary-subtle: #ccfbf1;
+  --bg-surface: #ffffff;
+  --bg-body: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --radius-card: 16px;
+  --radius-sm: 8px;
+  --shadow-soft: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar-custom {
+  background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+  padding: 0.85rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-brand {
+  letter-spacing: -0.02em;
+}
+
+/* Cards & Containers */
+.card-modern {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-modern:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* Buttons */
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-primary-custom:hover, .btn-primary-custom:focus {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-custom {
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-color);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.btn-outline-custom:hover {
+  background-color: var(--primary-subtle);
+  color: var(--primary-hover);
+  border-color: var(--primary-color);
+}
+
+/* Inputs & Form Controls */
+.form-control, .form-select {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.15);
+}
+
+/* Tables */
+.table {
+  vertical-align: middle;
+}
+
+.table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background-color: #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.table td {
+  padding: 0.9rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Badges */
+.badge-status {
+  padding: 0.4rem 0.65rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  background-color: #fef3c7;
+  color: #92400e;
+}
