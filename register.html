@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PetCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="/">🐾 PetCare Portal</a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-light btn-sm px-3" href="/">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card-modern p-4 p-md-5">
+                    <h4 class="fw-bold mb-2">Create Pet Owner Account</h4>
+                    <p class="text-muted small mb-4">Join PetCare to manage appointments and records for your pets.</p>
+
+                    <form action="/register" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Full Name</label>
+                            <input type="text" name="full_name" class="form-control" placeholder="e.g. John Doe" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Create a secure password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="e.g. +1 555-0199">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-semibold text-secondary">Address</label>
+                            <textarea name="address" class="form-control" rows="2" placeholder="Street, City, Zip"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2">Create Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

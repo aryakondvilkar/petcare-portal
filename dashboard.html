@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard - PetCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="/">🐾 PetCare Portal</a>
+            <div class="navbar-nav ms-auto align-items-center">
+                <span class="text-white-50 me-3">Welcome, <strong class="text-white">{{ owner['full_name'] }}</strong></span>
+                <a class="btn btn-outline-light btn-sm px-3" href="/">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container pb-5">
+        <div class="row g-4">
+            
+            <!-- Left Column -->
+            <div class="col-lg-5">
+                <!-- Add Pet Card -->
+                <div class="card-modern p-4 mb-4">
+                    <h5 class="fw-bold mb-3">Register New Pet</h5>
+                    <form action="/add-pet/{{ owner['owner_id'] }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Pet Name</label>
+                            <input type="text" name="name" class="form-control" required placeholder="e.g. Bruno">
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Species</label>
+                                <select name="species" class="form-select" required>
+                                    <option value="Dog">Dog</option>
+                                    <option value="Cat">Cat</option>
+                                    <option value="Bird">Bird</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Gender</label>
+                                <select name="gender" class="form-select">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Breed</label>
+                                <input type="text" name="breed" class="form-control" placeholder="e.g. Golden Retriever">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Age (Years)</label>
+                                <input type="number" name="age" class="form-control" placeholder="3">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2">+ Add Pet Profile</button>
+                    </form>
+                </div>
+
+                <!-- Pet Profiles List -->
+                <div class="card-modern p-4">
+                    <h5 class="fw-bold mb-3">Your Pets</h5>
+                    {% if pets %}
+                        <div class="d-flex flex-column gap-2">
+                            {% for pet in pets %}
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3 border bg-white">
+                                <div>
+                                    <span class="fw-bold fs-6">{{ pet['name'] }}</span>
+                                    <span class="badge bg-light text-secondary ms-1">{{ pet['species'] }}</span>
+                                    <div class="text-muted small mt-1">
+                                        {{ pet['breed'] or 'Mixed' }} • {{ pet['age'] or '?' }} yrs • {{ pet['gender'] }}
+                                    </div>
+                                </div>
+                                <a href="/medical-records/{{ pet['pet_id'] }}" class="btn btn-outline-custom btn-sm">
+                                    🩺 Records
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted small mb-0">No pets added yet. Use the form above to add your first pet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-7">
+                <div class="card-modern p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Booked Appointments</h5>
+                        <a href="/book/{{ owner['owner_id'] }}" class="btn btn-primary-custom btn-sm px-3">
+                            + Book Service
+                        </a>
+                    </div>
+
+                    {% if bookings %}
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Pet</th>
+                                        <th>Service</th>
+                                        <th>Provider</th>
+                                        <th>Schedule</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for b in bookings %}
+                                    <tr>
+                                        <td class="fw-semibold">{{ b['pet_name'] }}</td>
+                                        <td>{{ b['service_name'] }}</td>
+                                        <td class="text-muted small">{{ b['provider_name'] }}</td>
+                                        <td>
+                                            <span class="d-block">{{ b['booking_date'] }}</span>
+                                            <small class="text-muted">{{ b['booking_time'] }}</small>
+                                        </td>
+                                        <td>
+                                            <span class="badge-status">{{ b['status'] }}</span>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="/review/{{ b['booking_id'] }}" class="btn btn-outline-secondary btn-sm py-1 px-2">
+                                                ⭐ Review
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5 text-muted">
+                            <div class="fs-1 mb-2">🗓️</div>
+                            <p class="mb-3">No appointments scheduled yet.</p>
+                            <a href="/book/{{ owner['owner_id'] }}" class="btn btn-primary-custom btn-sm">Schedule Now</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

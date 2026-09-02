@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service - PetCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="/">🐾 PetCare Portal</a>
+            <div class="navbar-nav ms-auto">
+                <a class="btn btn-outline-light btn-sm px-3" href="/dashboard/{{ owner_id }}">Back to Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card-modern p-4 p-md-5">
+                    <h4 class="fw-bold mb-2">Book an Appointment</h4>
+                    <p class="text-muted small mb-4">Choose your pet, preferred service, and veterinarian/provider below.</p>
+
+                    <form action="/book/{{ owner_id }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Select Pet</label>
+                            <select name="pet_id" class="form-select" required>
+                                {% for pet in pets %}
+                                    <option value="{{ pet['pet_id'] }}">{{ pet['name'] }} ({{ pet['species'] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Select Service</label>
+                            <select name="service_id" class="form-select" required>
+                                {% for s in services %}
+                                    <option value="{{ s['service_id'] }}">{{ s['service_name'] }} — ${{ s['price'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Choose Service Provider</label>
+                            <select name="provider_id" class="form-select" required>
+                                {% for sp in providers %}
+                                    <option value="{{ sp['provider_id'] }}">{{ sp['full_name'] }} ({{ sp['role'] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Date</label>
+                                <input type="date" name="booking_date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-secondary">Time</label>
+                                <input type="time" name="booking_time" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2">Confirm Appointment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
