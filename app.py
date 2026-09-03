@@ -56,7 +56,7 @@ def login():
         if owner:
             session['owner_id'] = owner['owner_id'] if 'owner_id' in owner.keys() else owner[0]
             session['owner_name'] = owner['full_name'] if 'full_name' in owner.keys() else owner[1]
-            return redirect('/dashboard')
+            return redirect('/')
         else:
             return "Invalid email or password. <a href='/login'>Try again</a>", 401
 
