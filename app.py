@@ -54,14 +54,15 @@ def login():
         conn.close()
 
         if owner:
-            session['owner_id'] = owner['owner_id'] if 'owner_id' in owner.keys() else owner[0]
-            session['owner_name'] = owner['full_name'] if 'full_name' in owner.keys() else owner[1]
-            return redirect('/')
+            owner_id = owner['owner_id'] if 'owner_id' in owner.keys() else owner[0]
+            owner_name = owner['full_name'] if 'full_name' in owner.keys() else owner[1]
+            session['owner_id'] = owner_id
+            session['owner_name'] = owner_name
+            return redirect(url_for('dashboard', owner_id=owner_id))
         else:
             return "Invalid email or password. <a href='/login'>Try again</a>", 401
 
     return render_template('login.html')
-
 # 3. Owner Dashboard
 @app.route('/dashboard/<int:owner_id>')
 def dashboard(owner_id):
