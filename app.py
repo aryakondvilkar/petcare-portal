@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.secret_key = 'petcare_secure_secret_key_999'
 
 def get_db_connection():
