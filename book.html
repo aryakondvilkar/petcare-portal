@@ -3,73 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Service - PetCare</title>
+    <title>🐾 PetCare - Book Appointment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --teal-darkest: #022c22;
+            --teal-dark: #064e3b;
+            --teal-primary: #047857;
+            --teal-light: #10b981;
+        }
+
+        body { 
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(16, 185, 129, 0.12) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .top-green-panel {
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #047857 100%);
+            border-bottom: 3px solid #10b981;
+            padding: 16px 30px;
+        }
+
+        .card-custom { 
+            border: 1.5px solid rgba(16, 185, 129, 0.25); 
+            border-radius: 24px; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 16px 40px -8px rgba(4, 120, 87, 0.18);
+        }
+
+        .btn-brand { 
+            background: linear-gradient(135deg, #047857, #064e3b);
+            color: #ffffff; 
+            border: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.35);
+        }
+        .btn-brand:hover { background: linear-gradient(135deg, #10b981, #047857); color: #fff; }
+
+        .btn-logout {
+            background-color: #dc2626 !important;
+            color: #ffffff !important;
+            border: none;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="/">🐾 PetCare Portal</a>
-            <div class="navbar-nav ms-auto">
-                <a class="btn btn-outline-light btn-sm px-3" href="/dashboard/{{ owner_id }}">Back to Dashboard</a>
-            </div>
+    <div class="top-green-panel d-flex justify-content-between align-items-center">
+        <a href="/dashboard" class="text-white text-decoration-none fw-bold fs-5">🐾 PetCare Portal</a>
+        <div class="d-flex gap-2">
+            <a href="/dashboard" class="btn btn-outline-light btn-sm rounded-pill px-3">Dashboard</a>
+            <a href="/logout" class="btn btn-logout btn-sm rounded-pill px-3">Logout</a>
         </div>
-    </nav>
+    </div>
 
-    <div class="container pb-5">
+    <div class="container my-auto py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card-modern p-4 p-md-5">
-                    <h4 class="fw-bold mb-2">Book an Appointment</h4>
-                    <p class="text-muted small mb-4">Choose your pet, preferred service, and veterinarian/provider below.</p>
+            <div class="col-md-6">
+                <div class="card card-custom p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <div class="fs-1 mb-2">📅</div>
+                        <h3 class="fw-bold text-dark">Schedule Service Appointment</h3>
+                        <p class="text-muted small">Choose your pet, service, provider, date, and time slot</p>
+                    </div>
 
-                    <form action="/book/{{ owner_id }}" method="POST">
+                    <form method="POST" action="/book/{{ owner_id }}">
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Select Pet</label>
-                            <select name="pet_id" class="form-select" required>
+                            <label class="form-label small fw-bold text-secondary">Select Pet</label>
+                            <select class="form-select rounded-pill px-3" name="pet_id" required>
                                 {% for pet in pets %}
-                                    <option value="{{ pet['pet_id'] }}">{{ pet['name'] }} ({{ pet['species'] }})</option>
+                                <option value="{{ pet.pet_id }}">{{ pet.name }} ({{ pet.species }} - {{ pet.breed }})</option>
                                 {% endfor %}
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Select Service</label>
-                            <select name="service_id" class="form-select" required>
-                                {% for s in services %}
-                                    <option value="{{ s['service_id'] }}">{{ s['service_name'] }} — ${{ s['price'] }}</option>
+                            <label class="form-label small fw-bold text-secondary">Select Service</label>
+                            <select class="form-select rounded-pill px-3" name="service_id" required>
+                                {% for service in services %}
+                                <option value="{{ service.service_id }}">{{ service.service_name }} (₹{{ "%.0f"|format(service.base_price) }})</option>
                                 {% endfor %}
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Choose Service Provider</label>
-                            <select name="provider_id" class="form-select" required>
-                                {% for sp in providers %}
-                                    <option value="{{ sp['provider_id'] }}">{{ sp['full_name'] }} ({{ sp['role'] }})</option>
+                            <label class="form-label small fw-bold text-secondary">Select Service Provider</label>
+                            <select class="form-select rounded-pill px-3" name="provider_id" required>
+                                {% for p in providers %}
+                                <option value="{{ p.provider_id }}">{{ p.full_name }} - {{ p.role }} ({{ p.clinic_or_shop_name }})</option>
                                 {% endfor %}
                             </select>
                         </div>
 
-                        <div class="row g-2 mb-4">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-secondary">Date</label>
-                                <input type="date" name="booking_date" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-semibold text-secondary">Time</label>
-                                <input type="time" name="booking_time" class="form-control" required>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Appointment Date</label>
+                            <input type="date" class="form-control rounded-pill px-3" name="booking_date" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom w-100 py-2">Confirm Appointment</button>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-secondary">Appointment Time Slot</label>
+                            <select class="form-select rounded-pill px-3" name="booking_time" required>
+                                <option value="09:00 AM">09:00 AM</option>
+                                <option value="10:30 AM">10:30 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="02:30 PM">02:30 PM</option>
+                                <option value="04:00 PM">04:00 PM</option>
+                                <option value="05:30 PM">05:30 PM</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-brand w-100 rounded-pill py-2 fw-bold">Confirm Booking</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="text-center py-3 text-white small" style="background: var(--teal-darkest);">
+        &copy; 2026 PetCare Unified Portal
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
