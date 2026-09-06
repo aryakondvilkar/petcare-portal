@@ -294,5 +294,11 @@ def logout():
     flash('Logged out successfully.', 'info')
     return redirect(url_for('login'))
 
+import os
+from reset_and_seed_all import rebuild_database
+
+if not os.path.exists('petcare.db'):
+    rebuild_database()
+
 if __name__ == '__main__':
     app.run(debug=True)
