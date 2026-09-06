@@ -3,60 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - PetCare</title>
+    <title>🐾 PetCare - Create Account</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --teal-darkest: #022c22;
+            --teal-dark: #064e3b;
+            --teal-primary: #047857;
+            --teal-light: #10b981;
+        }
+
+        body { 
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(16, 185, 129, 0.12) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .top-green-panel {
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #047857 100%);
+            border-bottom: 3px solid #10b981;
+            padding: 16px 30px;
+        }
+
+        .card-custom { 
+            border: 1.5px solid rgba(16, 185, 129, 0.25); 
+            border-radius: 24px; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 16px 40px -8px rgba(4, 120, 87, 0.18);
+        }
+
+        .btn-brand { 
+            background: linear-gradient(135deg, #047857, #064e3b);
+            color: #ffffff; 
+            border: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.35);
+        }
+
+        .btn-brand:hover { 
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: #ffffff; 
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-5">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="/">🐾 PetCare Portal</a>
-            <div class="navbar-nav ms-auto">
-                <a class="btn btn-outline-light btn-sm px-3" href="/">Home</a>
-            </div>
-        </div>
-    </nav>
+    <div class="top-green-panel d-flex justify-content-between align-items-center">
+        <a href="/" class="text-white text-decoration-none fw-bold fs-5">🐾 PetCare Platform</a>
+        <a href="/login" class="btn btn-outline-light btn-sm rounded-pill px-3">Sign In</a>
+    </div>
 
-    <div class="container pb-5">
+    <div class="container my-auto py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card-modern p-4 p-md-5">
-                    <h4 class="fw-bold mb-2">Create Pet Owner Account</h4>
-                    <p class="text-muted small mb-4">Join PetCare to manage appointments and records for your pets.</p>
+            <div class="col-md-6">
+                <div class="card card-custom p-4 p-md-5">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissible fade show small" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
 
-                    <form action="/register" method="POST">
+                    <div class="text-center mb-4">
+                        <div class="fs-1 mb-2">📝</div>
+                        <h3 class="fw-bold text-dark">Create Account</h3>
+                        <p class="text-muted small">Register as a Pet Owner or Service Provider</p>
+                    </div>
+
+                    <form method="POST" action="/register">
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Full Name</label>
-                            <input type="text" name="full_name" class="form-control" placeholder="e.g. John Doe" required>
+                            <label class="form-label small fw-bold text-secondary">Register As</label>
+                            <select class="form-select rounded-pill px-3" id="roleSelect" name="role" onchange="toggleProviderFields()" required>
+                                <option value="owner">Pet Parent / Owner</option>
+                                <option value="provider">Service Provider (Vet / Groomer / Walker)</option>
+                            </select>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Email Address</label>
-                            <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+                            <label class="form-label small fw-bold text-secondary">Full Name</label>
+                            <input type="text" class="form-control rounded-pill px-3" name="full_name" placeholder="John Doe" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Create a secure password" required>
+                            <label class="form-label small fw-bold text-secondary">Email Address</label>
+                            <input type="email" class="form-control rounded-pill px-3" name="email" placeholder="name@example.com" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label small fw-semibold text-secondary">Phone Number</label>
-                            <input type="tel" name="phone" class="form-control" placeholder="e.g. +1 555-0199">
+                            <label class="form-label small fw-bold text-secondary">Mobile Number</label>
+                            <input type="text" class="form-control rounded-pill px-3" name="phone" placeholder="9876543210" required>
+                        </div>
+
+                        <!-- Provider Specific Fields -->
+                        <div id="providerFields" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">Provider Role</label>
+                                <select class="form-select rounded-pill px-3" name="provider_role">
+                                    <option value="Veterinarian">Veterinarian</option>
+                                    <option value="Groomer">Pet Groomer</option>
+                                    <option value="Walker">Dog Walker</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">Clinic / Shop / Practice Name</label>
+                                <input type="text" class="form-control rounded-pill px-3" name="clinic_name" placeholder="Paws Care Center">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">Years of Experience</label>
+                                <input type="number" class="form-control rounded-pill px-3" name="experience_years" value="3" min="1">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold text-secondary">Qualifications & Degrees</label>
+                                <input type="text" class="form-control rounded-pill px-3" name="qualification" placeholder="BVSc, Certified Groomer, etc.">
+                            </div>
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label small fw-semibold text-secondary">Address</label>
-                            <textarea name="address" class="form-control" rows="2" placeholder="Street, City, Zip"></textarea>
+                            <label class="form-label small fw-bold text-secondary">Password</label>
+                            <input type="password" class="form-control rounded-pill px-3" name="password" placeholder="••••••••" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-custom w-100 py-2">Create Account</button>
+                        <button type="submit" class="btn btn-brand w-100 rounded-pill py-2 fw-bold mb-3">Register Account</button>
                     </form>
+
+                    <div class="text-center">
+                        <span class="text-muted small">Already have an account? <a href="/login" class="text-success fw-bold text-decoration-none">Sign In</a></span>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="text-center py-3 text-white small" style="background: var(--teal-darkest);">
+        &copy; 2026 PetCare Unified Portal
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleProviderFields() {
+            const role = document.getElementById('roleSelect').value;
+            const providerFields = document.getElementById('providerFields');
+            providerFields.style.display = (role === 'provider') ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
