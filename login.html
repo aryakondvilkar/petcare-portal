@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 PetCare - Sign In</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --teal-darkest: #022c22;
+            --teal-dark: #064e3b;
+            --teal-primary: #047857;
+            --teal-light: #10b981;
+        }
+
+        body { 
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(16, 185, 129, 0.12) 1.5px, transparent 1.5px);
+            background-size: 28px 28px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .top-green-panel {
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #047857 100%);
+            border-bottom: 3px solid #10b981;
+            padding: 16px 30px;
+        }
+
+        .card-custom { 
+            border: 1.5px solid rgba(16, 185, 129, 0.25); 
+            border-radius: 24px; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 16px 40px -8px rgba(4, 120, 87, 0.18);
+        }
+
+        .btn-brand { 
+            background: linear-gradient(135deg, #047857, #064e3b);
+            color: #ffffff; 
+            border: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(4, 120, 87, 0.35);
+        }
+
+        .btn-brand:hover { 
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: #ffffff; 
+            transform: translateY(-2px);
+        }
+
+        .demo-chip {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .demo-chip:hover {
+            background: #dcfce7;
+            border-color: #10b981;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-green-panel d-flex justify-content-between align-items-center">
+        <a href="/" class="text-white text-decoration-none fw-bold fs-5">🐾 PetCare Platform</a>
+        <a href="/" class="btn btn-outline-light btn-sm rounded-pill px-3">Home</a>
+    </div>
+
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card card-custom p-4 p-md-5">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissible fade show small" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    <div class="text-center mb-4">
+                        <div class="fs-1 mb-2">🔐</div>
+                        <h3 class="fw-bold text-dark">Welcome Back</h3>
+                        <p class="text-muted small">Sign in to your account dashboard</p>
+                    </div>
+
+                    <form method="POST" action="/login">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Email Address</label>
+                            <input type="email" class="form-control rounded-pill px-3" id="emailInput" name="email" placeholder="name@example.com" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Password</label>
+                            <input type="password" class="form-control rounded-pill px-3" id="passwordInput" name="password" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-secondary">Account Role</label>
+                            <select class="form-select rounded-pill px-3" id="roleSelect" name="role" required>
+                                <option value="owner">Pet Parent / Owner</option>
+                                <option value="provider">Service Provider (Vet / Groomer / Walker)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-brand w-100 rounded-pill py-2 fw-bold mb-3">Sign In</button>
+                    </form>
+
+                    <div class="text-center mb-3">
+                        <span class="text-muted small">Don't have an account? <a href="/register" class="text-success fw-bold text-decoration-none">Register here</a></span>
+                    </div>
+
+                    <!-- Built-in Demo Accounts (Password: 1234) -->
+                    <div class="border-top pt-3 mt-2">
+                        <span class="d-block text-center text-muted small fw-bold mb-2">⚡ Quick Demo Login (Password: 1234)</span>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="demo-chip d-flex justify-content-between align-items-center" onclick="fillDemo('alex@test.com', '1234', 'owner')">
+                                <span class="small fw-bold text-dark">👤 Pet Owner</span>
+                                <span class="badge bg-success bg-opacity-10 text-success small font-monospace">alex@test.com</span>
+                            </div>
+                            <div class="demo-chip d-flex justify-content-between align-items-center" onclick="fillDemo('sarah@petcare.in', '1234', 'provider')">
+                                <span class="small fw-bold text-dark">🩺 Veterinarian</span>
+                                <span class="badge bg-success bg-opacity-10 text-success small font-monospace">sarah@petcare.in</span>
+                            </div>
+                            <div class="demo-chip d-flex justify-content-between align-items-center" onclick="fillDemo('emily@petcare.in', '1234', 'provider')">
+                                <span class="small fw-bold text-dark">✂️ Pet Groomer</span>
+                                <span class="badge bg-success bg-opacity-10 text-success small font-monospace">emily@petcare.in</span>
+                            </div>
+                            <div class="demo-chip d-flex justify-content-between align-items-center" onclick="fillDemo('mike@petcare.in', '1234', 'provider')">
+                                <span class="small fw-bold text-dark">🦮 Dog Walker</span>
+                                <span class="badge bg-success bg-opacity-10 text-success small font-monospace">mike@petcare.in</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 text-white small" style="background: var(--teal-darkest);">
+        &copy; 2026 PetCare Unified Portal
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function fillDemo(email, pass, role) {
+            document.getElementById('emailInput').value = email;
+            document.getElementById('passwordInput').value = pass;
+            document.getElementById('roleSelect').value = role;
+        }
+    </script>
+</body>
+</html>
