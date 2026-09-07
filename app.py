@@ -300,5 +300,9 @@ from reset_and_seed_all import rebuild_database
 if not os.path.exists('petcare.db'):
     rebuild_database()
 
+with app.app_context():
+    import init_db
+    init_db.init_db()
+
 if __name__ == '__main__':
     app.run(debug=True)
