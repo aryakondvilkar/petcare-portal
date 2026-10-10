@@ -71,7 +71,6 @@ def rebuild_database():
         );
     ''')
 
-    # Owners matching exact quick demo buttons
     owners = [
         ("Alex Turner", "alex@test.com", "9876543210", "1234"),
         ("Priya Sharma", "priya@example.com", "9123456789", "1234"),
@@ -86,7 +85,6 @@ def rebuild_database():
     ]
     cursor.executemany('INSERT INTO Owner (full_name, email, phone, password) VALUES (?, ?, ?, ?)', owners)
 
-    # Providers matching exact quick demo buttons
     providers = [
         ("Dr. Sarah Jenkins", "Veterinarian", "9876543211", "sarah@petcare.in", "Happy Paws Clinic", 8, "BVSc", "1234"),
         ("Mike Ross", "Groomer", "9876543212", "mike@grooming.com", "Clean Paws Spa", 5, "Certified", "1234"),
