@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+import os
 import sqlite3
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
-app = Flask(__name__, template_folder='.')
+basedir = os.path.abspath(os.path.dirname(__file__))
+app = Flask(__name__)
 app.secret_key = 'petcare_secure_secret_key_999'
 
 def get_db_connection():
-    conn = sqlite3.connect('petcare.db')
+    db_path = os.path.join(basedir, 'petcare.db')
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -55,7 +58,7 @@ def register():
         try:
             if role == 'owner':
                 conn.execute('INSERT INTO Owner (full_name, email, phone, password) VALUES (?, ?, ?, ?)',
-                             (full_name, email, phone, password))
+                           (full_name, email, phone, password))
             else:
                 clinic_name = request.form.get('clinic_name', 'Independent Practice')
                 provider_role = request.form.get('provider_role', 'Veterinarian')
@@ -125,6 +128,17 @@ def book_service(owner_id=None):
         provider_id = request.form.get('provider_id')
         booking_date = request.form.get('booking_date')
         booking_time = request.form.get('booking_time')
+        
+        # Check if the provider is already booked for this date and time slot
+        existing_booking = conn.execute('''
+            SELECT * FROM Booking 
+            WHERE provider_id = ? AND booking_date = ? AND booking_time = ? AND status != 'Cancelled'
+        ''', (provider_id, booking_date, booking_time)).fetchone()
+        
+        if existing_booking:
+            conn.close()
+            flash('This service provider is already occupied in this time slot. Please choose another slot.', 'danger')
+            return redirect(url_for('book_service', owner_id=owner_id))
         
         conn.execute('''
             INSERT INTO Booking (owner_id, pet_id, service_id, provider_id, booking_date, booking_time, status)
@@ -262,31 +276,34 @@ def review(booking_id):
 
 @app.route('/data-flow')
 def data_flow():
-    conn = sqlite3.connect('petcare.db')
-    conn.row_factory = sqlite3.Row
+    conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Fetch data for Interconnections (Section 2)
+    # Content 2: Unique Interconnections Flow Map (Collapsed duplicates)
     interconnections = cursor.execute('''
         SELECT p.name AS pet_name, o.full_name AS owner_name, 
-               sp.full_name AS provider_name, s.service_name
+               sp.full_name AS provider_name, s.service_name, b.status
         FROM Pet p
         JOIN Owner o ON p.owner_id = o.owner_id
         LEFT JOIN Booking b ON p.pet_id = b.pet_id
         LEFT JOIN Service_Catalog s ON b.service_id = s.service_id
         LEFT JOIN Service_Provider sp ON b.provider_id = sp.provider_id
+        GROUP BY p.pet_id, s.service_id
     ''').fetchall()
     
-    # Fetch data for Appointments (Section 3)
+    # Content 3: Active Booked Appointments Ledger (Direct select without restrictive grouping)
     appointments = cursor.execute('''
-        SELECT p.name AS pet_name, s.service_name, b.status
+        SELECT b.booking_id, p.name AS pet_name, o.full_name AS owner_name, 
+               o.phone AS owner_phone, s.service_name, s.base_price, 
+               b.booking_date, b.booking_time, b.status
         FROM Booking b
         JOIN Pet p ON b.pet_id = p.pet_id
+        JOIN Owner o ON b.owner_id = o.owner_id
         JOIN Service_Catalog s ON b.service_id = s.service_id
     ''').fetchall()
     
     conn.close()
-    return render_template('data_flow.html', interconnections=interconnections, appointments=appointments)
+    return render_template('data_flow.html', interconnections=interconnections, appointments=appointments, bookings=appointments)
 
 @app.route('/logout')
 def logout():
@@ -294,11 +311,12 @@ def logout():
     flash('Logged out successfully.', 'info')
     return redirect(url_for('login'))
 
+
 import os
 from reset_and_seed_all import rebuild_database
 
-if not os.path.exists('petcare.db'):
-    rebuild_database()
+# Force rebuild/seed on startup to guarantee Indian pricing on Render
+rebuild_database()
 
 if __name__ == '__main__':
     app.run(debug=True)
