@@ -318,9 +318,13 @@ from reset_and_seed_all import rebuild_database
 # Force rebuild/seed on startup to guarantee Indian pricing on Render
 rebuild_database()
 
-with app.app_context():
-    import init_db
-    init_db.init_db()
+from reset_and_seed_all import rebuild_database
+
+# Force rebuild/seed on startup to guarantee Indian pricing on Render
+rebuild_database()
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
