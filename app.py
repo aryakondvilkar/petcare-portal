@@ -323,8 +323,12 @@ from reset_and_seed_all import rebuild_database
 # Force rebuild/seed on startup to guarantee Indian pricing on Render
 rebuild_database()
 
-if __name__ == '__main__':
-    app.run(debug=True)
+import os
+from reset_and_seed_all import rebuild_database
+
+db_file = os.path.join(basedir, 'petcare.db')
+if not os.path.exists(db_file):
+    rebuild_database()
 
 if __name__ == '__main__':
     app.run(debug=True)
