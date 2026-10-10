@@ -311,11 +311,24 @@ def logout():
     flash('Logged out successfully.', 'info')
     return redirect(url_for('login'))
 
+import sqlite3
 from reset_and_seed_all import rebuild_database
 
 db_file = os.path.join(basedir, 'petcare.db')
-if not os.path.exists(db_file):
-     rebuild_database()
+should_rebuild = True
+
+if os.path.exists(db_file):
+    try:
+        conn = sqlite3.connect(db_file)
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM Service_Catalog LIMIT 1")
+        conn.close()
+        should_rebuild = False
+    except Exception:
+        should_rebuild = True
+
+if should_rebuild:
+    rebuild_database()
 
 if __name__ == '__main__':
     app.run(debug=True)
