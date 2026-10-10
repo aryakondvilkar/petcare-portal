@@ -141,81 +141,150 @@
             <h2 class="fw-bold text-shadow" style="color: var(--brand-green);"><i class="bi bi-diagram-3-fill"></i> System Architecture & Data Flow Hub</h2>
             <a href="/" class="btn btn-outline-success rounded-pill px-4 fw-bold shadow-sm">Back to Home</a>
         </div>
+<!-- Content 1: ER Schema with Guaranteed Table Pop-ups & Clean Text Lines -->
+        <div class="card shadow-sm mb-5 border-0 bg-white">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="fw-bold mb-1" style="color: #0f5132;">1. Entity-Relationship (ER) Schema & Flow Map</h4>
+                        <p class="text-muted small mb-0">Structural database entities, attributes, relationship bars, and interactive hover animations.</p>
+                    </div>
+                    <span class="badge text-white px-3 py-2" style="background-color: #0f5132;">ER Model Map</span>
+                </div>
 
-        <!-- Section 1: Entity-Relationship Box Diagram with Cardinality -->
-        <div class="card mb-4">
-            <div class="card-header text-white fw-bold py-3" style="background-color: var(--brand-green); font-size: 1.05rem;">1. Entity Relationship & Data Flow Diagram</div>
-            <div class="card-body py-5">
-                <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
+                <!-- ER Diagram Structured Grid Container -->
+                <div class="p-4 rounded bg-light border" style="border-color: rgba(15, 81, 50, 0.2) !important;">
                     
-                    <!-- Owner Entity Box -->
-                    <div class="entity-box box-owner">
-                        <div class="entity-header">Owner (Table)</div>
-                        <div class="entity-body text-muted">
-                            <div class="fw-bold text-dark mb-1">PK: owner_id</div>
-                            <hr class="my-1">
-                            <div class="attr-row"><span>Full Name</span><span>full_name</span></div>
-                            <div class="attr-row"><span>Email</span><span>email_id</span></div>
-                            <div class="attr-row"><span>Phone Number</span><span>phone</span></div>
-                            <div class="attr-row"><span>Password</span><span>password</span></div>
+                    <!-- Top Row: OWNER -->
+                    <div class="row justify-content-center mb-2">
+                        <div class="col-lg-5 col-md-7">
+                            <div class="card er-card shadow-sm bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">OWNER</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">owner_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>full_name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>email</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>phone</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>password</span> <span></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Cardinality Link 1 -->
-                    <div class="text-center px-1">
-                        <span class="cardinality-badge">1 : N</span>
-                        <div class="fw-bold fs-4" style="color: var(--brand-green);">⟶</div>
-                    </div>
-
-                    <!-- Pet Entity Box -->
-                    <div class="entity-box box-pet">
-                        <div class="entity-header">Pet (Table)</div>
-                        <div class="entity-body text-muted">
-                            <div class="fw-bold text-dark mb-1">PK: pet_id | FK: owner_id</div>
-                            <div class="text-danger small fw-bold mb-1">Constraint: age > 0</div>
-                            <hr class="my-1">
-                            <div class="attr-row"><span>Pet Name</span><span>name</span></div>
-                            <div class="attr-row"><span>Species</span><span>species</span></div>
-                            <div class="attr-row"><span>Breed</span><span>breed</span></div>
-                            <div class="attr-row"><span>Age</span><span>age</span></div>
-                            <div class="attr-row"><span>Gender</span><span>gender</span></div>
+                    <!-- Clean Relationship Connector Bar: OWNER to PET & BOOKING -->
+                    <div class="row text-center font-monospace mb-3">
+                        <div class="col-6 text-end pe-4">
+                            <div class="d-inline-block px-3 py-1 rounded bg-white border border-success shadow-sm fw-bold" style="color: #0f5132;">
+                                owner — <span class="text-success">owns (1 : N)</span> — pet
+                            </div>
+                        </div>
+                        <div class="col-6 text-start ps-4">
+                            <div class="d-inline-block px-3 py-1 rounded bg-white border border-success shadow-sm fw-bold" style="color: #0f5132;">
+                                owner — <span class="text-success">makes (1 : N)</span> — booking
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Cardinality Link 2 -->
-                    <div class="text-center px-1">
-                        <span class="cardinality-badge">1 : N</span>
-                        <div class="fw-bold fs-4" style="color: var(--brand-green);">⟶</div>
-                    </div>
+                    <!-- Middle Row: PET, SERVICE_PROVIDER, SERVICE_CATALOG -->
+                    <div class="row justify-content-between align-items-start mb-2 g-4">
+                        <!-- PET Table -->
+                        <div class="col-lg-4 col-md-4">
+                            <div class="card er-card shadow-sm bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">PET</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">pet_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>owner_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>species</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>breed</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>age</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>gender</span> <span></span></div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Booking Entity Box -->
-                    <div class="entity-box box-booking">
-                        <div class="entity-header">Booking (Table)</div>
-                        <div class="entity-body text-muted">
-                            <div class="fw-bold text-dark mb-1">PK: booking_id | FKs</div>
-                            <hr class="my-1">
-                            <div class="attr-row"><span>Booking Date</span><span>booking_date</span></div>
-                            <div class="attr-row"><span>Booking Time</span><span>booking_time</span></div>
-                            <div class="attr-row"><span>Status</span><span>status</span></div>
+                        <!-- SERVICE_PROVIDER Table -->
+                        <div class="col-lg-4 col-md-4">
+                            <div class="card er-card shadow-sm bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">SERVICE_PROVIDER</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">provider_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>full_name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>role</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>email</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>phone</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>clinic_or_shop_name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>experience_years</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>qualification</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>password</span> <span></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SERVICE_CATALOG Table -->
+                        <div class="col-lg-4 col-md-4">
+                            <div class="card er-card shadow-sm bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">SERVICE_CATALOG</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">service_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>service_name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">decimal</span> <span>base_price</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>description</span> <span></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Cardinality Link 3 -->
-                    <div class="text-center px-1">
-                        <span class="cardinality-badge">N : 1</span>
-                        <div class="fw-bold fs-4" style="color: var(--brand-green);">⟵</div>
+                    <!-- Clean Relationship Connector Bar: Lower tier -->
+                    <div class="row text-center font-monospace mb-3">
+                        <div class="col-lg-4">
+                            <div class="d-inline-block px-2 py-1 rounded bg-white border border-success shadow-sm fw-bold small" style="color: #0f5132;">
+                                pet — <span class="text-success">has (1 : N)</span> — record
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="d-inline-block px-2 py-1 rounded bg-white border border-success shadow-sm fw-bold small" style="color: #0f5132;">
+                                provider — <span class="text-success">fulfills</span> — booking
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="d-inline-block px-2 py-1 rounded bg-white border border-success shadow-sm fw-bold small" style="color: #0f5132;">
+                                catalog — <span class="text-success">categorizes</span> — booking
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Service Provider Entity Box -->
-                    <div class="entity-box box-provider">
-                        <div class="entity-header">Service_Provider (Table)</div>
-                        <div class="entity-body text-muted">
-                            <div class="fw-bold text-dark mb-1">PK: provider_id</div>
-                            <hr class="my-1">
-                            <div class="attr-row"><span>Provider Name</span><span>full_name</span></div>
-                            <div class="attr-row"><span>Email</span><span>email</span></div>
-                            <div class="attr-row"><span>Role (Vet/Groomer)</span><span>role</span></div>
-                            <div class="attr-row"><span>Clinic Name</span><span>clinic_name</span></div>
+                    <!-- Bottom Row: MEDICAL_RECORD & BOOKING -->
+                    <div class="row justify-content-between align-items-start g-4">
+                        <!-- MEDICAL_RECORD Table -->
+                        <div class="col-lg-5 col-md-6">
+                            <div class="card er-card shadow-sm bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">MEDICAL_RECORD</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">record_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>pet_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>provider_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>author_name</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>diagnosis</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>treatment</span> <span></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BOOKING Table (Central Flow Hub) -->
+                        <div class="col-lg-6 col-md-6">
+                            <div class="card er-card shadow bg-white text-dark" style="border: 2px solid #0f5132;">
+                                <div class="card-header text-white fw-bold text-center py-2" style="background-color: #0f5132 !important;">BOOKING (Central Flow Hub)</div>
+                                <div class="card-body p-2 font-monospace small">
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span class="fw-bold">booking_id</span> <span class="fw-bold" style="color: #0f5132;">PK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>owner_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>pet_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">int</span> <span>service_id</span> <span class="text-primary fw-bold">FK</span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>booking_date</span> <span></span></div>
+                                    <div class="d-flex justify-content-between border-bottom py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>booking_time</span> <span></span></div>
+                                    <div class="d-flex justify-content-between py-2 px-2 hover-row align-items-center"><span class="text-muted">string</span> <span>status</span> <span></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -223,6 +292,17 @@
             </div>
         </div>
 
+        <!-- High-Specificity Hover Elevation Style Override -->
+        <style>
+            div.card.er-card {
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease !important;
+            }
+            div.card.er-card:hover {
+                transform: translateY(-8px) scale(1.02) !important;
+                box-shadow: 0 1rem 2.5rem rgba(15, 81, 50, 0.3) !important;
+                z-index: 10;
+            }
+        </style>
         <!-- Section 2: Minimalist Interconnection List (4 Columns) with Row Hover -->
         <div class="card mb-4">
             <div class="card-header text-white fw-bold py-3" style="background-color: var(--brand-green); font-size: 1.05rem;">2. Complete Interconnection Summary</div>
